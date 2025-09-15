@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, Reorder } from "framer-motion";
 import { Upload, Image as ImageIcon, ArrowUp, ArrowDown, Pencil, Trash2, LayoutGrid, Rows3, Sparkles, Save, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -126,9 +126,30 @@ export function Toolbar(props: ToolbarProps) {
                 <div className="space-y-2">
                   <div className="text-[11px] uppercase tracking-wide text-neutral-500">Items</div>
                   <AnimatePresence initial={false}>
-                    {items.map((it, idx) => (
-                      <ItemCard key={it.id} it={it} idx={idx} items={items} setItems={setItems} setEditingId={setEditingId} setForm={setForm} resetForm={resetForm} editingId={editingId} currency={currency} />
-                    ))}
+                    <Reorder.Group
+                      axis="y"
+                      values={items.map((i) => i.id)}
+                      onReorder={(newOrderIds) =>
+                        setItems((prev) => {
+                          const map = new Map(prev.map((i) => [i.id, i]));
+                          return newOrderIds.map((id) => map.get(id)!).filter(Boolean);
+                        })
+                      }
+                      className="space-y-2"
+                    >
+                      {items.map((it) => (
+                        <ItemCard
+                          key={it.id}
+                          it={it}
+                          setItems={setItems}         // ✅ required for delete
+                          setEditingId={setEditingId}
+                          setForm={setForm}
+                          resetForm={resetForm}
+                          editingId={editingId}
+                          currency={currency}
+                        />
+                      ))}
+                    </Reorder.Group>
                   </AnimatePresence>
                   {items.length === 0 && (
                     <div className="rounded-xl border border-dashed border-neutral-300 p-6 text-center text-sm text-neutral-500">No items yet. Add your first one above.</div>

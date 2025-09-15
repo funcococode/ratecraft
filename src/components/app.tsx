@@ -1,9 +1,9 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Download, RotateCcw, BadgeIndianRupee } from "lucide-react";
 import { Toolbar } from "@/components/toolbar";
 import { Preview } from "@/components/preview";
 import type { Item } from "@/lib/helpers";
-import { currencySafe, downloadPDF, downloadPNG } from "@/lib/helpers";
+import { downloadPDF, downloadPNG } from "@/lib/helpers";
 
 export default function MainApp() {
   const [title, setTitle] = useState<string>(() => localStorage.getItem("rcc-title") || "Your Service Title");
