@@ -1,5 +1,5 @@
-import { motion, AnimatePresence, Reorder } from "framer-motion";
-import { Upload, Image as ImageIcon, ArrowUp, ArrowDown, Pencil, Trash2, LayoutGrid, Rows3, Sparkles, Save, RotateCcw } from "lucide-react";
+import {  AnimatePresence, Reorder } from "framer-motion";
+import { Upload, Image as ImageIcon, LayoutGrid, Rows3, Sparkles, Save, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -9,7 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import type { Item } from "@/lib/helpers";
-import { CURRENCIES, onSelectItemImage, onSelectLogo, addItem, updateItem, editItem, removeItem, moveItem } from "@/lib/helpers";
+import { CURRENCIES, onSelectItemImage, onSelectLogo, addItem, updateItem} from "@/lib/helpers";
 import ItemCard from "./item";
 
 interface ToolbarProps {
@@ -18,17 +18,17 @@ interface ToolbarProps {
   accent: string; setAccent: (v: string) => void;
   logo?: string; setLogo: (v?: string) => void;
   form: { name: string; unit: string; rate: string; image?: string };
-  setForm: (v: any) => void;
-  items: Item[]; setItems: (updater: any) => void;
+  setForm: (v: { name: string; unit: string; rate: string; image?: string } | ((prev: { name: string; unit: string; rate: string; image?: string }) => { name: string; unit: string; rate: string; image?: string })) => void;
+  items: Item[]; setItems: (updater: (items: Item[]) => Item[]) => void;
   editingId: string | null; setEditingId: (v: string | null) => void;
-  template: "cards" | "rows" | "billboard"; setTemplate: (v: any) => void;
-  density: "cozy" | "compact"; setDensity: (v: any) => void;
+  template: "cards" | "rows" | "billboard"; setTemplate: (v: "cards" | "rows" | "billboard") => void;
+  density: "cozy" | "compact"; setDensity: (v: "cozy" | "compact") => void;
   note: string; setNote: (v: string) => void;
   accentSoft: string;
 }
 
 export function Toolbar(props: ToolbarProps) {
-  const { title, setTitle, currency, setCurrency, accent, setAccent, logo, setLogo, form, setForm, items, setItems, editingId, setEditingId, template, setTemplate, density, setDensity, note, setNote, accentSoft } = props;
+  const { title, setTitle, currency, setCurrency, accent, setAccent, logo, setLogo, form, setForm, items, setItems, editingId, setEditingId, template, setTemplate, density, setDensity, note, setNote} = props;
 
   const resetForm = () => setForm({ name: "", unit: "per unit", rate: "", image: undefined });
 
@@ -104,10 +104,10 @@ export function Toolbar(props: ToolbarProps) {
                     </label>
                   </Button>
                   <div className="grid grid-cols-2 gap-2">
-                    <Input value={form.name} onChange={(e) => setForm((f: any) => ({ ...f, name: e.target.value }))} placeholder="Item name" />
-                    <Input value={form.unit} onChange={(e) => setForm((f: any) => ({ ...f, unit: e.target.value }))} placeholder="Unit (per hour)" />
+                    <Input value={form.name} onChange={(e) => setForm((f: { name: string; unit: string; rate: string; image?: string }) => ({ ...f, name: e.target.value }))} placeholder="Item name" />
+                    <Input value={form.unit} onChange={(e) => setForm((f: { name: string; unit: string; rate: string; image?: string }) => ({ ...f, unit: e.target.value }))} placeholder="Unit (per hour)" />
                   </div>
-                  <Input type="number" value={form.rate} min={0} onChange={(e) => setForm((f: any) => ({ ...f, rate: e.target.value }))} placeholder="Rate (numeric)" />
+                  <Input type="number" value={form.rate} min={0} onChange={(e) => setForm((f: { name: string; unit: string; rate: string; image?: string }) => ({ ...f, rate: e.target.value }))} placeholder="Rate (numeric)" />
                   <div className="flex items-center gap-2">
                     {editingId ? (
                       <>
@@ -168,7 +168,7 @@ export function Toolbar(props: ToolbarProps) {
               <div className="text-[11px] uppercase tracking-wide text-neutral-500">Density</div>
               <div className="inline-flex rounded-xl border border-neutral-200 bg-white text-sm overflow-hidden">
                 {["cozy", "compact"].map((d) => (
-                  <button key={d} onClick={() => setDensity(d as any)} className={`px-3 py-2 capitalize ${density === d ? "bg-neutral-100" : "hover:bg-neutral-50"}`}>
+                  <button key={d} onClick={() => setDensity(d as 'cozy' | 'compact')} className={`px-3 py-2 capitalize ${density === d ? "bg-neutral-100" : "hover:bg-neutral-50"}`}>
                     {d}
                   </button>
                 ))}

@@ -10,7 +10,7 @@ type Props = {
   // ✅ we need this for delete to actually update the array
   setItems: (updater: (items: Item[]) => Item[]) => void;
   setEditingId: (id: string | null) => void;
-  setForm: (form: any) => void;
+  setForm: (form: { name: string; unit: string; rate: string; image?: string }) => void;
   resetForm: () => void;
   editingId: string | null;
   currency: string;

@@ -11,12 +11,14 @@ export default function MainApp() {
   const [accent, setAccent] = useState<string>(() => localStorage.getItem("rcc-accent") || "#111827");
   const [logo, setLogo] = useState<string | undefined>(() => localStorage.getItem("rcc-logo") || undefined);
   const [items, setItems] = useState<Item[]>(() => {
-    try { const raw = localStorage.getItem("rcc-items"); if (raw) return JSON.parse(raw) as Item[]; } catch {}
+    try { const raw = localStorage.getItem("rcc-items"); if (raw) return JSON.parse(raw) as Item[]; } catch {
+        // noop
+    }
     return [];
   });
   const [exporting, setExporting] = useState(false);
-  const [template, setTemplate] = useState<"cards" | "rows" | "billboard">(() => (localStorage.getItem("rcc-template") as any) || "cards");
-  const [density, setDensity] = useState<"cozy" | "compact">(() => (localStorage.getItem("rcc-density") as any) || "cozy");
+  const [template, setTemplate] = useState<"cards" | "rows" | "billboard">(() => (localStorage.getItem("rcc-template") as 'cards' | 'rows' | 'billboard') || "cards");
+  const [density, setDensity] = useState<"cozy" | "compact">(() => (localStorage.getItem("rcc-density") as 'cozy' | 'compact') || "cozy");
   const [note, setNote] = useState<string>(() => localStorage.getItem("rcc-note") || "Prices are inclusive of basic edits. Taxes extra.");
   const [form, setForm] = useState<{ name: string; unit: string; rate: string; image?: string }>({ name: "", unit: "per unit", rate: "", image: undefined });
 
@@ -29,7 +31,7 @@ export default function MainApp() {
   useEffect(() => localStorage.setItem("rcc-note", note), [note]);
   useEffect(() => { if (logo) localStorage.setItem("rcc-logo", logo); else localStorage.removeItem("rcc-logo"); }, [logo]);
 
-  const previewRef = useRef<HTMLDivElement | null>(null);
+  const previewRef = useRef<HTMLDivElement>(null);
   const accentSoft = useMemo(() => `${accent}10`, [accent]);
 
   function resetAll() {

@@ -1,4 +1,4 @@
-import React, { RefObject } from "react";
+import { type RefObject } from "react";
 import { Image as ImageIcon } from "lucide-react";
 import type { Item } from "@/lib/helpers";
 import { currencySafe } from "@/lib/helpers";
@@ -12,7 +12,7 @@ interface PreviewProps {
   logo?: string;
   title: string;
   note: string;
-  previewRef: RefObject<HTMLDivElement>;
+  previewRef: RefObject<HTMLDivElement | null>;
 }
 
 export function Preview({ template, density, items, currency, accent, logo, title, note, previewRef }: PreviewProps) {
@@ -108,7 +108,7 @@ export function Preview({ template, density, items, currency, accent, logo, titl
 
           {template === "billboard" && (
             <div className="grid gap-6 px-8 pb-8 md:grid-cols-[1.2fr_1fr]">
-              <div className="rounded-2xl border bg-[var(--acc-soft)] p-6" style={{ borderColor: accentSoft, ["--acc-soft" as any]: accentSoft }}>
+              <div className="rounded-2xl border bg-[var(--acc-soft)] p-6" style={{ borderColor: accentSoft, ["--acc-soft" as string]: accentSoft }}>
                 <div className="text-sm uppercase tracking-wide text-neutral-500">What we do</div>
                 <div className="mt-2 text-3xl font-semibold leading-tight" style={{ color: accent }}>{title || "Service Title"}</div>
                 <p className="mt-3 text-sm text-neutral-600">Choose what fits your project. Transparent pricing, fast turnaround, and friendly revisions.</p>

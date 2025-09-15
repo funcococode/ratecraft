@@ -1,4 +1,3 @@
-import React from "react";
 import { motion } from "framer-motion";
 import {
   BadgeIndianRupee,
@@ -16,17 +15,10 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
-// ------------------------------------------------------------
-// RateCraft Landing Page
-// - drop this file anywhere (e.g., src/pages/LandingPage.tsx)
-// - requires Tailwind + shadcn/ui + framer-motion + lucide-react
-// - change hrefs for the primary CTA buttons to match your app route
-// ------------------------------------------------------------
 
 const items = [
   { name: "Recording", unit: "per hour", rate: 1000 },

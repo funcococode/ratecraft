@@ -1,4 +1,4 @@
-import { RefObject } from "react";
+import {type RefObject } from "react";
 import { toPng } from "html-to-image";
 import { jsPDF } from "jspdf";
 
@@ -51,14 +51,14 @@ function triggerDownload(href: string, filename: string) {
 // ── Item helpers ─────────────────────────────────────────────────────────────
 export async function onSelectItemImage(
   file: File | undefined,
-  setForm: (updater: any) => void
+  setForm: (updater: (prev: { name: string; unit: string; rate: string; image?: string }) => { name: string; unit: string; rate: string; image?: string }) => void
 ) {
   if (!file) {
-    setForm((f: any) => ({ ...f, image: undefined }));
+    setForm((f) => ({ ...f, image: undefined }));
     return;
   }
   const dataUrl = await readFileAsDataURL(file);
-  setForm((f: any) => ({ ...f, image: dataUrl }));
+  setForm((f) => ({ ...f, image: dataUrl }));
 }
 
 export async function onSelectLogo(
@@ -103,7 +103,7 @@ export function updateItem(
 export function editItem(
   it: Item,
   setEditingId: (v: string | null) => void,
-  setForm: (v: any) => void
+  setForm: (v: { name: string; unit: string; rate: string; image?: string }) => void
 ) {
   setEditingId(it.id);
   setForm({ name: it.name, unit: it.unit, rate: String(it.rate), image: it.image });
@@ -142,7 +142,7 @@ export function moveItem(
 
 // ── Export helpers ───────────────────────────────────────────────────────────
 export async function downloadPNG(
-  previewRef: RefObject<HTMLDivElement>,
+  previewRef: RefObject<HTMLDivElement | null>,
   title: string,
   setExporting: (v: boolean) => void
 ) {
@@ -159,7 +159,7 @@ export async function downloadPNG(
 }
 
 export async function downloadPDF(
-  previewRef: RefObject<HTMLDivElement>,
+  previewRef: RefObject<HTMLDivElement | null>,
   title: string,
   setExporting: (v: boolean) => void
 ) {
