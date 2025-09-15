@@ -21,6 +21,17 @@ export default function MainApp() {
   const [density, setDensity] = useState<"cozy" | "compact">(() => (localStorage.getItem("rcc-density") as 'cozy' | 'compact') || "cozy");
   const [note, setNote] = useState<string>(() => localStorage.getItem("rcc-note") || "Prices are inclusive of basic edits. Taxes extra.");
   const [form, setForm] = useState<{ name: string; unit: string; rate: string; image?: string }>({ name: "", unit: "per unit", rate: "", image: undefined });
+  // Typography and layout controls
+  const [font, setFont] = useState<"sans" | "serif" | "mono">(() => (localStorage.getItem("rcc-font") as "sans" | "serif" | "mono") || "sans");
+  const [titleSize, setTitleSize] = useState<number>(() => {
+    const v = Number(localStorage.getItem("rcc-titleSize"));
+    return Number.isFinite(v) && v > 0 ? v : 24;
+  });
+  const [priceSize, setPriceSize] = useState<number>(() => {
+    const v = Number(localStorage.getItem("rcc-priceSize"));
+    return Number.isFinite(v) && v > 0 ? v : 18;
+  });
+  const [align, setAlign] = useState<"left" | "center" | "right">(() => (localStorage.getItem("rcc-align") as "left" | "center" | "right") || "right");
 
   useEffect(() => localStorage.setItem("rcc-title", title), [title]);
   useEffect(() => localStorage.setItem("rcc-currency", currency), [currency]);
@@ -29,6 +40,10 @@ export default function MainApp() {
   useEffect(() => localStorage.setItem("rcc-template", template), [template]);
   useEffect(() => localStorage.setItem("rcc-density", density), [density]);
   useEffect(() => localStorage.setItem("rcc-note", note), [note]);
+  useEffect(() => localStorage.setItem("rcc-font", font), [font]);
+  useEffect(() => localStorage.setItem("rcc-titleSize", String(titleSize)), [titleSize]);
+  useEffect(() => localStorage.setItem("rcc-priceSize", String(priceSize)), [priceSize]);
+  useEffect(() => localStorage.setItem("rcc-align", align), [align]);
   useEffect(() => { if (logo) localStorage.setItem("rcc-logo", logo); else localStorage.removeItem("rcc-logo"); }, [logo]);
 
   const previewRef = useRef<HTMLDivElement>(null);
@@ -44,7 +59,24 @@ export default function MainApp() {
     setDensity("cozy");
     setNote("Prices are inclusive of basic edits. Taxes extra.");
     setForm({ name: "", unit: "per unit", rate: "", image: undefined });
-    ["rcc-title","rcc-currency","rcc-accent","rcc-logo","rcc-items","rcc-template","rcc-density","rcc-note"].forEach(localStorage.removeItem.bind(localStorage));
+    setFont("sans");
+    setTitleSize(24);
+    setPriceSize(18);
+    setAlign("right");
+    [
+      "rcc-title",
+      "rcc-currency",
+      "rcc-accent",
+      "rcc-logo",
+      "rcc-items",
+      "rcc-template",
+      "rcc-density",
+      "rcc-note",
+      "rcc-font",
+      "rcc-titleSize",
+      "rcc-priceSize",
+      "rcc-align",
+    ].forEach(localStorage.removeItem.bind(localStorage));
   }
 
   return (
@@ -82,6 +114,10 @@ export default function MainApp() {
           density={density} setDensity={setDensity}
           note={note} setNote={setNote}
           accentSoft={accentSoft}
+          font={font} setFont={setFont}
+          titleSize={titleSize} setTitleSize={setTitleSize}
+          priceSize={priceSize} setPriceSize={setPriceSize}
+          align={align} setAlign={setAlign}
         />
 
         <Preview
@@ -94,6 +130,10 @@ export default function MainApp() {
           title={title}
           note={note}
           previewRef={previewRef}
+          font={font}
+          titleSize={titleSize}
+          priceSize={priceSize}
+          align={align}
         />
       </div>
     </div>

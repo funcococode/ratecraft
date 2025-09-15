@@ -1,5 +1,5 @@
 import {  AnimatePresence, Reorder } from "framer-motion";
-import { Upload, Image as ImageIcon, LayoutGrid, Rows3, Sparkles, Save, RotateCcw } from "lucide-react";
+import { Upload, Image as ImageIcon, LayoutGrid, Rows3, Sparkles, Save, RotateCcw, AlignLeft, AlignCenter, AlignRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -25,10 +25,14 @@ interface ToolbarProps {
   density: "cozy" | "compact"; setDensity: (v: "cozy" | "compact") => void;
   note: string; setNote: (v: string) => void;
   accentSoft: string;
+  font: "sans" | "serif" | "mono"; setFont: (v: "sans" | "serif" | "mono") => void;
+  titleSize: number; setTitleSize: (v: number) => void;
+  priceSize: number; setPriceSize: (v: number) => void;
+  align: "left" | "center" | "right"; setAlign: (v: "left" | "center" | "right") => void;
 }
 
 export function Toolbar(props: ToolbarProps) {
-  const { title, setTitle, currency, setCurrency, accent, setAccent, logo, setLogo, form, setForm, items, setItems, editingId, setEditingId, template, setTemplate, density, setDensity, note, setNote} = props;
+  const { title, setTitle, currency, setCurrency, accent, setAccent, logo, setLogo, form, setForm, items, setItems, editingId, setEditingId, template, setTemplate, density, setDensity, note, setNote, font, setFont, titleSize, setTitleSize, priceSize, setPriceSize, align, setAlign } = props;
 
   const resetForm = () => setForm({ name: "", unit: "per unit", rate: "", image: undefined });
 
@@ -172,6 +176,49 @@ export function Toolbar(props: ToolbarProps) {
                     {d}
                   </button>
                 ))}
+              </div>
+
+              <Separator />
+              <div className="grid gap-3">
+                <Label className="text-[11px] uppercase tracking-wide text-neutral-500">Font</Label>
+                <div className="grid grid-cols-3 gap-2">
+                  <Button variant={font === "sans" ? "default" : "outline"} onClick={() => setFont("sans")} className="justify-center">Sans</Button>
+                  <Button variant={font === "serif" ? "default" : "outline"} onClick={() => setFont("serif")} className="justify-center">Serif</Button>
+                  <Button variant={font === "mono" ? "default" : "outline"} onClick={() => setFont("mono")} className="justify-center">Mono</Button>
+                </div>
+              </div>
+
+              <div className="grid gap-3">
+                <Label className="text-[11px] uppercase tracking-wide text-neutral-500">Title size</Label>
+                <Select value={String(titleSize)} onValueChange={(v) => setTitleSize(Number(v))}>
+                  <SelectTrigger className="w-[220px]"><SelectValue placeholder="Title size" /></SelectTrigger>
+                  <SelectContent>
+                    {[18,20,24,28,32,36].map((n) => (
+                      <SelectItem key={n} value={String(n)}>{n}px</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="grid gap-3">
+                <Label className="text-[11px] uppercase tracking-wide text-neutral-500">Price size</Label>
+                <Select value={String(priceSize)} onValueChange={(v) => setPriceSize(Number(v))}>
+                  <SelectTrigger className="w-[220px]"><SelectValue placeholder="Price size" /></SelectTrigger>
+                  <SelectContent>
+                    {[16,18,20,24,28,32].map((n) => (
+                      <SelectItem key={n} value={String(n)}>{n}px</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="grid gap-3">
+                <Label className="text-[11px] uppercase tracking-wide text-neutral-500">Alignment</Label>
+                <div className="inline-flex overflow-hidden rounded-xl border border-neutral-200 bg-white text-sm">
+                  <button onClick={() => setAlign("left")} className={`px-3 py-2 ${align === 'left' ? 'bg-neutral-100' : 'hover:bg-neutral-50'}`} title="Align left"><AlignLeft className="h-4 w-4" /></button>
+                  <button onClick={() => setAlign("center")} className={`px-3 py-2 border-x ${align === 'center' ? 'bg-neutral-100' : 'hover:bg-neutral-50'}`} title="Align center"><AlignCenter className="h-4 w-4" /></button>
+                  <button onClick={() => setAlign("right")} className={`px-3 py-2 ${align === 'right' ? 'bg-neutral-100' : 'hover:bg-neutral-50'}`} title="Align right"><AlignRight className="h-4 w-4" /></button>
+                </div>
               </div>
             </TabsContent>
 

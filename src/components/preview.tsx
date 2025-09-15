@@ -1,4 +1,4 @@
-import { type RefObject } from "react";
+import { type RefObject, type CSSProperties } from "react";
 import { Image as ImageIcon } from "lucide-react";
 import type { Item } from "@/lib/helpers";
 import { currencySafe } from "@/lib/helpers";
@@ -13,13 +13,19 @@ interface PreviewProps {
   title: string;
   note: string;
   previewRef: RefObject<HTMLDivElement | null>;
+  font: "sans" | "serif" | "mono";
+  titleSize: number;
+  priceSize: number;
+  align: "left" | "center" | "right";
 }
 
-export function Preview({ template, density, items, currency, accent, logo, title, note, previewRef }: PreviewProps) {
+export function Preview({ template, density, items, currency, accent, logo, title, note, previewRef, font, titleSize, priceSize, align }: PreviewProps) {
   const accentLight = `${accent}16`;
   const accentSoft = `${accent}10`;
   const pad = density === "compact" ? "p-3" : "p-5";
   const img = density === "compact" ? "h-10 w-10" : "h-14 w-14";
+  const fontClass = font === "serif" ? "font-serif" : font === "mono" ? "font-mono" : "font-sans";
+  const textAlignStyle: CSSProperties = { textAlign: align };
 
   return (
     <section className="rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm">
@@ -27,11 +33,11 @@ export function Preview({ template, density, items, currency, accent, logo, titl
         <span>Preview</span>
       </div>
       <div className="grid place-items-center">
-        <div ref={previewRef} className="relative overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-xl" style={{ width: 900, maxWidth: "100%" }}>
+        <div ref={previewRef} className={`relative overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-xl ${fontClass}`} style={{ width: 900, maxWidth: "100%" }}>
           <div className="h-2 w-full" style={{ background: `linear-gradient(90deg, ${accent}, ${accentLight})` }} />
           <div className="flex items-center justify-between gap-4 px-8 py-6">
-            <div className="min-w-0">
-              <div className="text-2xl font-semibold tracking-tight" style={{ color: accent }}>{title || "Service Title"}</div>
+            <div className="min-w-0" style={textAlignStyle}>
+              <div className="font-semibold tracking-tight" style={{ color: accent, fontSize: titleSize }}>{title || "Service Title"}</div>
               <div className="text-xs text-neutral-500">Rate Card</div>
             </div>
             {logo ? (
@@ -61,7 +67,7 @@ export function Preview({ template, density, items, currency, accent, logo, titl
                       <div className="truncate text-xs text-neutral-500">{it.unit}</div>
                     </div>
                   </div>
-                  <div className="mt-3 text-right text-lg font-semibold" style={{ color: accent }}>
+                  <div className="mt-3 font-semibold" style={{ color: accent, fontSize: priceSize, ...textAlignStyle }}>
                     {currencySafe(currency)}{it.rate.toLocaleString()}
                   </div>
                 </div>
@@ -95,7 +101,7 @@ export function Preview({ template, density, items, currency, accent, logo, titl
                           <div className="truncate text-xs text-neutral-500">{it.unit}</div>
                         </div>
                       </div>
-                      <div className="text-right text-base font-semibold" style={{ color: accent }}>{currencySafe(currency)}{it.rate.toLocaleString()}</div>
+                      <div className="font-semibold" style={{ color: accent, fontSize: priceSize, ...textAlignStyle }}>{currencySafe(currency)}{it.rate.toLocaleString()}</div>
                     </div>
                   ))}
                   {items.length === 0 && (
@@ -110,7 +116,7 @@ export function Preview({ template, density, items, currency, accent, logo, titl
             <div className="grid gap-6 px-8 pb-8 md:grid-cols-[1.2fr_1fr]">
               <div className="rounded-2xl border bg-[var(--acc-soft)] p-6" style={{ borderColor: accentSoft, ["--acc-soft" as string]: accentSoft }}>
                 <div className="text-sm uppercase tracking-wide text-neutral-500">What we do</div>
-                <div className="mt-2 text-3xl font-semibold leading-tight" style={{ color: accent }}>{title || "Service Title"}</div>
+                <div className="mt-2 font-semibold leading-tight" style={{ color: accent, fontSize: titleSize }}>{title || "Service Title"}</div>
                 <p className="mt-3 text-sm text-neutral-600">Choose what fits your project. Transparent pricing, fast turnaround, and friendly revisions.</p>
               </div>
               <div className="grid gap-4">
@@ -129,7 +135,7 @@ export function Preview({ template, density, items, currency, accent, logo, titl
                         <div className="truncate text-xs text-neutral-500">{it.unit}</div>
                       </div>
                     </div>
-                    <div className="text-right text-lg font-semibold" style={{ color: accent }}>{currencySafe(currency)}{it.rate.toLocaleString()}</div>
+                    <div className="font-semibold" style={{ color: accent, fontSize: priceSize, ...textAlignStyle }}>{currencySafe(currency)}{it.rate.toLocaleString()}</div>
                   </div>
                 ))}
                 {items.length === 0 && (

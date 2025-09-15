@@ -1,5 +1,4 @@
 // ItemCard.tsx
-import React from "react";
 import { Reorder, useDragControls } from "framer-motion";
 import { GripVertical, ImageIcon, Pencil, Trash2 } from "lucide-react";
 import { Button } from "./ui/button";
