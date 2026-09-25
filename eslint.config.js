@@ -20,4 +20,9 @@ export default tseslint.config([
       globals: globals.browser,
     },
   },
+  {
+    // shadcn/ui primitives export variants alongside components.
+    files: ['src/components/ui/**/*.tsx'],
+    rules: { 'react-refresh/only-export-components': 'off' },
+  },
 ])

@@ -1,69 +1,37 @@
-# React + TypeScript + Vite
+# RateCraft
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Design polished rate cards and price lists in minutes. No sign-up — everything is saved in the browser.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Multiple cards** — a library of cards with live thumbnails; duplicate, delete (with undo), import/export as JSON.
+- **Sections & rich pricing** — group items, add descriptions, badges, images, and fixed / from / range / on-request prices with optional "was" prices for discounts. Paste whole lists from notes or spreadsheets.
+- **6 templates** — Studio, Ledger, Menu, Spotlight, Tiers, Minimal.
+- **Themes & type** — 8 palettes, any accent colour, 7 font pairings, spacing / alignment / corner / size controls.
+- **Export** — high-res PNG, A4 PDF (multi-page), single-page PDF, 1080² post, 1080×1920 story, copy to clipboard.
+- **Share links** — the card is compressed into the URL (`/view#…`), so no backend is needed.
+- **Editor niceties** — click items in the preview to edit, drag to reorder, undo/redo (⌘Z / ⇧⌘Z), autosave.
 
-## Expanding the ESLint configuration
+## Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+React 19 · TypeScript · Vite · Tailwind CSS v4 · Radix UI · Framer Motion · html-to-image · jsPDF · self-hosted Fontsource fonts.
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Routes
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+| Path | Page |
+| --- | --- |
+| `/` | Landing page |
+| `/app` | Card library + templates |
+| `/app/:cardId` | Editor |
+| `/view#<data>` | Read-only shared card |
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+`vercel.json` rewrites every path to `index.html` so these client-side routes work when opened directly or refreshed on Vercel.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Development
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
+npm run dev      # http://localhost:5173
+npm run build    # type-check + production build
+npm run lint
 ```
